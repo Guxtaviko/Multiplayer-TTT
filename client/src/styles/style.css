@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-slate-950 font-body text-white flex flex-col justify-center items-center w-screen min-h-screen
+}
+
+#game {
+  @apply grid grid-cols-3 grid-rows-3 gap-2 md:w-[69vh] w-[80vw] aspect-square bg-slate-500
+}
+
+.cell {
+  @apply bg-slate-950 cursor-pointer grid place-items-center md:text-7xl text-6xl
+}
+
+.player {
+  @apply text-emerald-400
+}
+
+.enemy {
+  @apply text-red-500
+}
+
+.backdrop {
+	@apply w-full h-full absolute z-10 backdrop-blur-sm bg-black bg-opacity-50
+}
+
+.modal {
+	@apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-slate-950 md:p-8 p-4 rounded-md shadow-lg shadow-black flex flex-col gap-2
+}
+
+.modal__options {
+	@apply cursor-pointer text-slate-600 hover:text-slate-200 mb-4 transition-all
+}
+
+.modal__options.selected {
+	@apply text-emerald-400
+}
+
+.modal__form {
+	@apply flex flex-col gap-4
+}
+
+.modal__players {
+	@apply flex justify-between
+}
+
+.modal__input {
+	@apply absolute opacity-0 cursor-pointer h-0 w-0
+}
+
+.modal__input:checked + .modal__label {
+	@apply border-2 border-emerald-400 bg-slate-700 text-emerald-400
+}
+
+.modal__label {
+	@apply bg-slate-900 hover:bg-slate-800 grid w-20 aspect-square cursor-pointer place-items-center rounded-lg text-4xl font-extrabold hover:border-emerald-600 border-2 border-slate-900 text-slate-500 transition-all
+}
+
+.modal__game {
+	@apply bg-slate-800 text-white outline-none p-2 rounded-lg border-2 border-slate-500 focus:border-emerald-400 focus:bg-slate-700 transition-all
+}
+
+#modal__button {
+	@apply w-full bg-emerald-500 text-slate-900 p-2 rounded-lg uppercase font-semibold transition-all hover:bg-emerald-400 hover:text-slate-950
+}
+
+.copyright {
+	@apply absolute bottom-2 font-light text-sm
+}
+
+.copyright a {
+	@apply text-emerald-400 font-medium hover:tracking-wide hover:text-emerald-300 transition-all
+}
+
+.end {
+	@apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-slate-950 md:p-8 p-4 rounded-md shadow-lg shadow-black hidden flex-col gap-2
+}
+
+.end__message {
+	@apply text-2xl uppercase font-bold
+}
+
+.end__restart {
+	@apply w-full bg-emerald-500 text-slate-900 py-2 px-4 rounded-lg uppercase font-semibold transition-all hover:bg-emerald-400 hover:text-slate-950
+}
+
+.end__votes {
+	@apply text-slate-500 text-xs text-end block italic
+}
+
+.votes {
+	@apply text-emerald-400
+}
+
+.progress {
+	@apply h-1 rounded-lg bg-slate-800
+}
+
+.progress__value {
+	@apply h-full rounded-lg bg-emerald-400 w-0 transition-all
+}
+
+.disconnect {
+	@apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-slate-950 md:p-8 p-4 rounded-md shadow-lg shadow-black hidden flex-col gap-2
+}
+
+.disconnect h1 {
+	@apply text-center text-xl font-bold
+}
+
+.disconnect__button {
+	@apply bg-emerald-500 text-slate-900 p-2 rounded-lg uppercase font-semibold transition-all hover:bg-emerald-400 hover:text-slate-950
+}

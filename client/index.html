@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script type="module" src="/src/main.ts" defer></script>
+    <title>Multiplayer TTT</title>
+  </head>
+  <body>
+		<div class="backdrop"></div>
+
+		<div class="modal">
+			<div class="flex gap-4 justify-between">
+				<h2 class="modal__options selected" id="create">Create Game</h2>
+				<h2 class="modal__options" id="join">Join Game</h2>
+			</div>
+			<form class="modal__form" autocomplete="off">
+				<div class="modal__players">
+					<div>
+						<input class="modal__input" type="radio" name="player" id="player-x" value="x">
+						<label class="modal__label" for="player-x">X</label>
+					</div>
+					<div class="grid place-items-center text-4xl text-slate-700">-</div>
+					<div>
+						<input class="modal__input" type="radio" name="player" id="player-o" value="o">
+						<label class="modal__label" for="player-o">O</label>
+					</div>
+				</div>
+				<div>
+					<span class="block text-sm ml-[2px] text-red-400" id="modal__error"></span>
+					<input type="text" class="modal__game" placeholder="Room name" name="name">
+				</div>
+				<button id="modal__button">Create</button>
+			</form>
+		</div>
+
+		<div class="end">
+			<h1 class="end__message">🫤 It is a tie!</h1>
+			<div class="end__status">
+				<span class="end__votes">Votes <strong class="votes">0/2</strong></span>
+				<div class="progress">
+					<div class="progress__value"></div>
+				</div>
+			</div>
+			<button class="end__restart">Restart</button>
+		</div>
+
+		<div class="disconnect">
+			<h1>Sorry! 😢</h1>
+			<h2 class="disconnect__message">Other player has disconnected</h2>
+			<button class="disconnect__button">New Game</button>
+		</div>
+
+    <main class="w-1/2 flex flex-col justify-center items-center gap-4">
+      <header class="text-center">
+        <h1 class="text-2xl font-bold">Multiplayer - TTT</h1>
+        <h2 class="text-lg"><strong id="turn"></strong> turn</h2>
+      </header>
+      <section id="game">
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+      </section>
+    </main>
+
+		<span class="copyright">Developed by <a href="https://github.com/guxtaviko" target="_blank">Guxtaviko</a></span>
+  </body>
+</html>
