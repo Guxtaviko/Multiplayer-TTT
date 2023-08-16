@@ -5,5 +5,8 @@ const gameState = [
 ]
 const player = 'X'
 const currentTurn = 'X'
+const history = {
+	x: 0, o: 0, ties: 0
+}
 
-export {gameState, player, currentTurn}
+export {gameState, player, currentTurn, history}
