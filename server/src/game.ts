@@ -24,7 +24,10 @@ const games: {
 		restartVotes: string[],
 		playerQnt: number,
 		currentTurn: player,
-		gameState: string[]
+		gameState: string[],
+		history: {
+			x: number, o: number, ties: number
+		}
 	}
 } = {}
 
@@ -37,7 +40,7 @@ const checkForEnd = ({gameState}: typeof games['']) => {
       gameState[a] !== '' &&
       gameState[a] === gameState[b] &&
       gameState[b] === gameState[c]
-    ) return gameState[a]; // Vitória encontrada
+    ) return gameState[a] as 'x' | 'o'; // Vitória encontrada
   }
 	if(gameState.every(state => state !== '')) return 'draw'
   return false; // Nenhuma vitória encontrada
@@ -52,7 +55,7 @@ const joiningPlayer = (game: typeof games['']) => {
 
 const gameServer = (io: Server) => {
 	io.on('connection', socket => {
-		console.log(`Socket: ${socket.id} - Handshaked 🫱`)
+	// console.log(`Socket: ${socket.id} - Handshaked 🫱`)
 
 		socket.on('createRoom', ([name, player]) => {
 			socket.join(name)
@@ -62,13 +65,18 @@ const gameServer = (io: Server) => {
 				restartVotes: [],
 				playerQnt: 1,
 				currentTurn: player,
-				gameState: initialGameState
+				gameState: initialGameState,
+				history: {
+					x: 0, o: 0, ties: 0
+				}
 			}
 
 			socket.emit('initialGameState', [games[name], player])
 		})
 
 		socket.on('joinRoom', name => {
+			if(!games[name]) return socket.emit('failToEnterRoom', name)
+			if(games[name].playerQnt === 2) return socket.emit('roomIsFull', name)
 			socket.join(name)
 			socketRooms[socket.id] = name
 
@@ -88,8 +96,14 @@ const gameServer = (io: Server) => {
 			socket.to(room).emit('gameChange', [gameState, currentTurn])
 			const status = checkForEnd(games[room])
 			if(status) {
-				if(status == 'draw') io.to(room).emit('draw')
-				else io.to(room).emit('win', status)
+				if(status === 'draw') {
+					io.to(room).emit('draw')
+					games[room].history.ties++
+				}
+				else {
+					io.to(room).emit('win', status)
+					games[room].history[status]++
+				}
 			}
 		})
 
@@ -110,7 +124,7 @@ const gameServer = (io: Server) => {
 		})
 
 		socket.on('disconnect', () => {
-			console.log(`Socket: ${socket.id} - Disconnected`)
+			// console.log(`Socket: ${socket.id} - Disconnected`)
 			const room = socketRooms[socket.id]
 			delete socketRooms[socket.id]
 

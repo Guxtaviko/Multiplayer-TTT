@@ -6,6 +6,7 @@ const handler = (document: Document) => {
 	const join = document.getElementById('join') as HTMLElement
 	const errorHandler = document.getElementById('modal__error') as HTMLElement
 	const form = document.querySelector('.modal__form') as HTMLFormElement
+	const roomsBtn = document.getElementById('roomsBtn') as HTMLButtonElement
 
 	const backdrop = document.querySelector('.backdrop') as HTMLElement
 	const modal = document.querySelector('.modal') as HTMLElement
@@ -20,6 +21,7 @@ const handler = (document: Document) => {
 		create.classList.remove('selected')
 		join.classList.add('selected')
 
+		roomsBtn.style.display = 'block'
 		errorHandler.innerHTML = ''
 
 		formElements.players.style.display = 'none'
@@ -31,6 +33,7 @@ const handler = (document: Document) => {
 		join.classList.remove('selected')
 		create.classList.add('selected')
 
+		roomsBtn.style.display = 'none'
 		errorHandler.innerHTML = ''
 
 		formElements.players.style.display = 'flex'

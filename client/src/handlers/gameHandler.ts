@@ -3,7 +3,16 @@ import socket from '../socket';
 type setGameProps = {
 	gameState: string[],
 	player?: string,
-	currentTurn: string
+	currentTurn: string,
+	history: {
+		x: number, o: number, ties: number
+	}
+}
+
+type updateGameProps = {
+	gameState: string[],
+	player?: string,
+	currentTurn: string,
 }
 
 let gamePlayer: string
@@ -12,6 +21,7 @@ let gameTurn: string
 const handler = (document: Document) => {
 	const cells = document.querySelectorAll('.cell')
 	const turn = document.getElementById('turn') as HTMLElement
+	const historyElements = document.querySelectorAll('.history')
 
 	const clickHandler = (e: Event) => {
 		const cell = e.target as Element
@@ -40,14 +50,17 @@ const handler = (document: Document) => {
 		return stateBuffer
 	}
 
-	return ({gameState, player, currentTurn}: setGameProps) => {
-
+	const updateTurn = (currentTurn: string, player?: string) => {
 		if(player) gamePlayer = player
 		gameTurn = currentTurn
 		const playerOrEnemy = currentTurn == gamePlayer ? 'player' : 'enemy'
 		turn.innerHTML = `(${currentTurn.toUpperCase()})`
 		turn.innerHTML += currentTurn == gamePlayer ? ` Your` : ` Enemy's`
 		turn.className = playerOrEnemy
+	}
+
+	const setGame = ({gameState, player, currentTurn, history}: setGameProps) => {
+		updateTurn(currentTurn, player)
 
 		cells.forEach((cell, i) => {
 			setCell(cell, gameState[i])
@@ -55,7 +68,28 @@ const handler = (document: Document) => {
 			cell.removeEventListener('click', clickHandler)
 			cell.addEventListener('click', clickHandler)
 		})
+
+		const [xWins, ties, oWins] = historyElements
+
+		if(gamePlayer == 'x') {
+			xWins.className = 'history player'
+			oWins.className = 'history enemy'
+		} else {
+			xWins.className = 'history enemy'
+			oWins.className = 'history player'
+		}
+
+		xWins.innerHTML = `X Wins: ${history.x}`
+		ties.innerHTML = `Ties: ${history.ties}`
+		oWins.innerHTML = `O Wins: ${history.o}`
 	}
+
+	const updateGame = ({gameState, player, currentTurn}: updateGameProps) => {
+		updateTurn(currentTurn, player)
+		cells.forEach((cell, i) => setCell(cell, gameState[i]))
+	}
+
+	return { setGame, updateGame }
 }
 
 export default handler(document)

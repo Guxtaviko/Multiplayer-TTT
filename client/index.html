@@ -1,75 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script type="module" src="/src/main.ts" defer></script>
-    <title>Multiplayer TTT</title>
-  </head>
-  <body>
-		<div class="backdrop"></div>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<div class="modal">
-			<div class="flex gap-4 justify-between">
-				<h2 class="modal__options selected" id="create">Create Game</h2>
-				<h2 class="modal__options" id="join">Join Game</h2>
-			</div>
-			<form class="modal__form" autocomplete="off">
-				<div class="modal__players">
-					<div>
-						<input class="modal__input" type="radio" name="player" id="player-x" value="x">
-						<label class="modal__label" for="player-x">X</label>
-					</div>
-					<div class="grid place-items-center text-4xl text-slate-700">-</div>
-					<div>
-						<input class="modal__input" type="radio" name="player" id="player-o" value="o">
-						<label class="modal__label" for="player-o">O</label>
-					</div>
-				</div>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+	<script type="module" src="/src/main.ts" defer></script>
+	<title>Multiplayer TTT</title>
+</head>
+
+<body>
+	<div class="backdrop"></div>
+
+	<div class="modal">
+		<div class="flex gap-4 justify-between">
+			<h2 class="modal__options selected" id="create">Create Game</h2>
+			<h2 class="modal__options" id="join">Join Game</h2>
+		</div>
+		<form class="modal__form" autocomplete="off">
+			<div class="modal__players">
 				<div>
-					<span class="block text-sm ml-[2px] text-red-400" id="modal__error"></span>
-					<input type="text" class="modal__game" placeholder="Room name" name="name">
+					<input class="modal__input" type="radio" name="player" id="player-x" value="x">
+					<label class="modal__label" for="player-x">X</label>
 				</div>
-				<button id="modal__button">Create</button>
-			</form>
-		</div>
-
-		<div class="end">
-			<h1 class="end__message">🫤 It is a tie!</h1>
-			<div class="end__status">
-				<span class="end__votes">Votes <strong class="votes">0/2</strong></span>
-				<div class="progress">
-					<div class="progress__value"></div>
+				<div class="grid place-items-center text-4xl text-slate-700">-</div>
+				<div>
+					<input class="modal__input" type="radio" name="player" id="player-o" value="o">
+					<label class="modal__label" for="player-o">O</label>
 				</div>
 			</div>
-			<button class="end__restart">Restart</button>
+			<div>
+				<span class="block text-sm ml-[2px] text-red-400" id="modal__error"></span>
+				<input type="text" class="modal__game" placeholder="Room name" name="name">
+				<button id="roomsBtn"
+					class="hidden text-sm ml-[2px] text-emerald-400 transition-all hover:text-emerald-600 cursor-pointer"
+					type="button">Show available rooms </button>
+			</div>
+			<button id="modal__button" type="submit">Create</button>
+		</form>
+	</div>
+
+	<div class="rooms">
+		<div class="flex gap-2 items-center justify-between">
+			<button id="goBackBtn">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+					class="w-4 h-4 text-slate-500 hover:text-slate-300">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+				</svg>
+			</button>
+			<h1 class="text-2xl font-bold text-emerald-400">Rooms List</h1>
+			<button id="refreshBtn">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+					class="w-4 h-4 text-slate-500 hover:text-slate-300">
+					<path stroke-linecap="round" stroke-linejoin="round"
+						d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+				</svg>
+			</button>
 		</div>
-
-		<div class="disconnect">
-			<h1>Sorry! 😢</h1>
-			<h2 class="disconnect__message">Other player has disconnected</h2>
-			<button class="disconnect__button">New Game</button>
+		<table class="table-auto my-2 w-full">
+			<thead class="bg-slate-900">
+				<tr>
+					<th>Room Name</th>
+					<th>Players</th>
+				</tr>
+			</thead>
+			<tbody class="rooms__body">
+				<tr class="active">
+					<td>Jorge</td>
+					<td>2</td>
+				</tr>
+				<tr>
+					<td>Claudio</td>
+					<td class="full">2</td>
+				</tr>
+				<tr>
+					<td>Jogo da Velha</td>
+					<td>1</td>
+				</tr>
+			</tbody>
+		</table>
+		<span class="block text-sm ml-[2px] text-red-400" id="rooms__error"></span>
+		<div class="flex justify-between gap-4 items-center">
+			<input id="searchRoom" type="text" autocomplete="off" placeholder="Search"
+				class="bg-slate-800 text-sm text-white outline-none p-2 rounded-lg border-2 border-slate-500 focus:border-emerald-400 focus:bg-slate-700 transition-all">
+			<button id="joinBtn"
+				class="text-sm bg-emerald-500 text-slate-900 py-2 px-4 rounded-lg uppercase font-semibold transition-all hover:bg-emerald-400 hover:text-slate-950">
+				Join
+			</button>
 		</div>
+	</div>
 
-    <main class="w-1/2 flex flex-col justify-center items-center gap-4">
-      <header class="text-center">
-        <h1 class="text-2xl font-bold">Multiplayer - TTT</h1>
-        <h2 class="text-lg"><strong id="turn"></strong> turn</h2>
-      </header>
-      <section id="game">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-      </section>
-    </main>
+	<div class="end">
+		<h1 class="end__message">🫤 It is a tie!</h1>
+		<div class="end__status">
+			<span class="end__votes">Votes <strong class="votes">0/2</strong></span>
+			<div class="progress">
+				<div class="progress__value"></div>
+			</div>
+		</div>
+		<button class="end__restart">Restart</button>
+	</div>
 
-		<span class="copyright">Developed by <a href="https://github.com/guxtaviko" target="_blank">Guxtaviko</a></span>
-  </body>
+	<div class="disconnect">
+		<h1>Sorry! 😢</h1>
+		<h2 class="disconnect__message">Other player has disconnected</h2>
+		<button class="disconnect__button">New Game</button>
+	</div>
+
+	<main class="md:w-[54vh] sm:w-[64vh] w-[80vw] flex flex-col justify-center items-center gap-8">
+		<header class="text-center">
+			<h1 class="text-2xl font-bold">Multiplayer - TTT</h1>
+			<h2 class="text-lg"><strong id="turn"></strong> turn</h2>
+		</header>
+		<section id="game">
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+		</section>
+		<div class="grid gap-4 grid-cols-3 w-full">
+			<div class="history player">
+				X Wins: 0
+			</div>
+			<div class="history border-slate-500 text-slate-300">
+				Ties: 0
+			</div>
+			<div class="history enemy">
+				O Wins: 0
+			</div>
+		</div>
+	</main>
+
+	<span class="copyright">Developed by <a href="https://github.com/guxtaviko" target="_blank">Guxtaviko</a></span>
+</body>
+
 </html>

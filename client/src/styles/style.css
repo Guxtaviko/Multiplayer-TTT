@@ -9,7 +9,7 @@ body {
 }
 
 #game {
-  @apply grid grid-cols-3 grid-rows-3 gap-2 md:w-[69vh] w-[80vw] aspect-square bg-slate-500
+  @apply grid grid-cols-3 grid-rows-3 md:gap-2 gap-1 w-full aspect-square bg-slate-500
 }
 
 .cell {
@@ -114,4 +114,40 @@ body {
 
 .disconnect__button {
 	@apply bg-emerald-500 text-slate-900 p-2 rounded-lg uppercase font-semibold transition-all hover:bg-emerald-400 hover:text-slate-950
+}
+
+.rooms {
+	@apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-slate-950 md:p-4 p-2 rounded-md shadow-lg shadow-black hidden
+}
+
+.rooms td, th {
+	@apply p-2 text-start
+}
+
+.rooms td:nth-child(2), th:nth-child(2) {
+	@apply text-end
+}
+
+.rooms__body > tr {
+	@apply bg-slate-800 cursor-pointer
+}
+
+.rooms__body > tr.active {
+	@apply bg-slate-600
+}
+
+.rooms__body td.full {
+	@apply text-red-500
+}
+
+.history {
+	@apply sm:p-2 p-1 md:border-2 border border-dashed md:text-base sm:text-sm text-xs
+}
+
+.history.player {
+	@apply border-emerald-500 text-emerald-300
+}
+
+.history.enemy {
+	@apply border-red-500 text-red-300
 }
